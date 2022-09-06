@@ -20,6 +20,9 @@ app.get("/urls", (req, res) => {
   const templateData = { urls: urlDatabase };
   res.render("urls_index", templateData);
 });
+app.get("/urls/new", (req, res) => {
+  res.render("urls_new");
+});
 app.get("/urls/:id", (req, res) => {
   const templateVars = {
     id: req.params.id,
