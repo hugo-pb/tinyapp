@@ -8,7 +8,16 @@ const urlDatabase = {
   b2xVn2: "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+// random string generator
+const generateRandomString = () => {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var result = "";
+  for (var i = 6; i > 0; --i)
+    result += chars[Math.floor(Math.random() * chars.length)];
 
+  return result;
+};
+//GET REQUESTS
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -37,7 +46,7 @@ app.get("/urls/:id", (req, res) => {
 //POST REQUEST
 app.post("/urls", (req, res) => {
   console.log(req.body); // Log the POST request body to the console
-  res.send("Ok"); // Respond with 'Ok' (we will replace this)
+  res.send(generateRandomString()); // Respond with 'Ok' (we will replace this)
 });
 
 app.listen(PORT, () => {
