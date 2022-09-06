@@ -44,14 +44,15 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.get("/u/:id", (req, res) => {
+  let longURL;
   res.redirect(longURL);
 });
 //POST REQUEST
 app.post("/urls", (req, res) => {
-  id = generateRandomString();
-  longURL = req.body;
-  urlDatabase[id] = req.body.longURL;
-  res.redirect(`/urls/:${id}`);
+  let id = generateRandomString();
+  let longURL = req.body.longURL;
+  urlDatabase[id] = longURL;
+  res.redirect(`/urls/${id}`);
 });
 
 app.listen(PORT, () => {
