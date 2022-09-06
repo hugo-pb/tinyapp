@@ -43,10 +43,15 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+app.get("/u/:id", (req, res) => {
+  res.redirect(longURL);
+});
 //POST REQUEST
 app.post("/urls", (req, res) => {
-  console.log(req.body); // Log the POST request body to the console
-  res.send(generateRandomString()); // Respond with 'Ok' (we will replace this)
+  id = generateRandomString();
+  longURL = req.body;
+  urlDatabase[id] = req.body.longURL;
+  res.redirect(`/urls/:${id}`);
 });
 
 app.listen(PORT, () => {
