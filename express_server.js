@@ -44,7 +44,8 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.get("/u/:id", (req, res) => {
-  let longURL;
+  const id = req.params.id;
+  const longURL = urlDatabase[id];
   res.redirect(longURL);
 });
 //POST REQUEST
