@@ -65,6 +65,15 @@ app.get("/u/:id", (req, res) => {
   res.redirect(longURL);
 });
 
+app.get("/register", (req, res) => {
+  const templateVars = {
+    user: req.cookies.username,
+    id: req.params.id,
+    longURL: urlDatabase[req.params.id]
+  };
+  res.render("register", templateVars);
+});
+
 // POST REQUEST //
 
 app.post("/urls", (req, res) => {
