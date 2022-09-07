@@ -85,6 +85,9 @@ app.get("/urls/:id", (req, res) => {
     longURL: urlDatabase[req.params.id],
     users,
   };
+  if (!urlDatabase[templateVars.id]) {
+    return res.redirect("/*");
+  }
   res.render("urls_show", templateVars);
 });
 
@@ -116,6 +119,10 @@ app.get("/login", (req, res) => {
     users,
   };
   res.render("login", templateVars);
+});
+app.get("/*", (req, res) => {
+  res.status(404);
+  res.render("404");
 });
 
 // POST REQUEST //
