@@ -99,6 +99,15 @@ app.get("/register", (req, res) => {
   };
   res.render("register", templateVars);
 });
+app.get("/login", (req, res) => {
+  const templateVars = {
+    user: req.cookies.userId,
+    id: req.params.id,
+    longURL: urlDatabase[req.params.id],
+    users,
+  };
+  res.render("register", templateVars);
+});
 
 // POST REQUEST //
 
