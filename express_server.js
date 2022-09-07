@@ -16,7 +16,7 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com",
 };
 
-const users = {
+let users = {
   userRandomID: {
     id: "userRandomID",
     email: "user@example.com",
@@ -32,8 +32,8 @@ const users = {
 // random string generator //
 const generateRandomString = () => {
   const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  var result = "";
-  for (var i = 6; i > 0; --i)
+  let result = "";
+  for (let i = 6; i > 0; --i)
     result += chars[Math.floor(Math.random() * chars.length)];
 
   return result;
@@ -57,7 +57,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  const templateData = {
+  let templateData = {
     user: req.cookies.userId,
     urls: urlDatabase,
     users,
@@ -66,7 +66,7 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  const templateVars = {
+  let templateVars = {
     user: req.cookies.userId,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
@@ -76,7 +76,7 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  const templateVars = {
+  let templateVars = {
     user: req.cookies.userId,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
@@ -91,7 +91,10 @@ app.get("/u/:id", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  const templateVars = {
+  if (req.cookies.userId) {
+    res.redirect("/urls");
+  }
+  let templateVars = {
     user: req.cookies.userId,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
@@ -100,8 +103,11 @@ app.get("/register", (req, res) => {
   res.render("register", templateVars);
 });
 app.get("/login", (req, res) => {
-  const templateVars = {
-    user: null,
+  if (req.cookies.userId) {
+    res.redirect("/urls");
+  }
+  let templateVars = {
+    user: req.cookies.userId,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
     users,
@@ -112,8 +118,8 @@ app.get("/login", (req, res) => {
 // POST REQUEST //
 
 app.post("/urls", (req, res) => {
-  let id = generateRandomString();
-  let longURL = req.body.longURL;
+  const id = generateRandomString();
+  const longURL = req.body.longURL;
   urlDatabase[id] = longURL;
   res.redirect(`/urls/${id}`);
 });
@@ -150,7 +156,7 @@ app.post("/logout", (req, res) => {
 
 app.post("/register", (req, res) => {
   const id = generateRandomString();
-  const newuser = {
+  let newuser = {
     id,
     email: req.body.email,
     password: req.body.password,
