@@ -131,12 +131,19 @@ app.post("/register", (req, res) => {
   const newuser = {
     id,
     email: req.body.email,
-    pasword: req.body.password,
+    password: req.body.password,
   };
+  if (!newuser.email || !newuser.password) {
+    res.status(400);
+    res.send(
+      "Oops! it looks like something is not correct, please check your form."
+    );
+  }
   users[id] = newuser;
   res.cookie("userId", newuser.id);
   res.redirect("/urls");
 });
+
 // APP.LISTEN //
 
 app.listen(PORT, () => {
