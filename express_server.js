@@ -106,7 +106,7 @@ app.get("/login", (req, res) => {
     longURL: urlDatabase[req.params.id],
     users,
   };
-  res.render("register", templateVars);
+  res.render("login", templateVars);
 });
 
 // POST REQUEST //
