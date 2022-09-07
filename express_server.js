@@ -12,15 +12,15 @@ app.set("view engine", "ejs");
 
 // data base //
 const urlDatabase = {
-  b2xVn2: "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
+  b2xVn2: { longURL: "http://www.lighthouselabs.ca", userID: "aJ48lW" },
+  "9sm5xK": { longURL: "http://www.google.com", userID: "aJ48lW" },
 };
 
 let users = {
   userRandomID: {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur",
+    id: "aJ48lW",
+    email: "h@gmail.com",
+    password: "123",
   },
   user2RandomID: {
     id: "user2RandomID",
@@ -49,6 +49,11 @@ const findUserByEmail = (email) => {
   return false;
 };
 
+// urlsForUser //
+const urlsForUser = (id) => {
+  const arr = [];
+};
+
 // GET REQUESTS //
 
 app.get("/", (req, res) => {
@@ -57,9 +62,14 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
+  if (!req.cookies.userId) {
+    res.redirect("/login");
+  }
+  const user = req.cookies.userId;
+  const urls = urlsForUser(user);
   let templateData = {
-    user: req.cookies.userId,
-    urls: urlDatabase,
+    user,
+    urls,
     users,
   };
   res.render("urls_index", templateData);
