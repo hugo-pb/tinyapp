@@ -17,7 +17,7 @@ const urlDatabase = {
 };
 
 let users = {
-  userRandomID: {
+  aJ48lW: {
     id: "aJ48lW",
     email: "h@gmail.com",
     password: "123",
@@ -53,7 +53,7 @@ const findUserByEmail = (email) => {
 const urlsForUser = (id) => {
   const arr = [];
   for (key in urlDatabase) {
-    if (urlDatabase[key].userID === id) {
+    if (urlDatabase[key].userID == id) {
       arr.push(urlDatabase[key]);
     }
   }
