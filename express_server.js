@@ -144,12 +144,6 @@ app.post("/register", (req, res) => {
     email: req.body.email,
     password: req.body.password,
   };
-  if (!newuser.email || !newuser.password) {
-    res.status(400);
-    return res.send(
-      "Oops! it looks like something is not correct, please check your form."
-    );
-  }
   if (findUserByEmail(req.body.email)) {
     res.status(400);
     return res.send("Oops! it looks like that email is already in use.");
