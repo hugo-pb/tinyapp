@@ -127,9 +127,9 @@ app.post("/register", (req, res) => {
     email: req.body.email,
     pasword: req.body.password,
   };
-  res.cookie("user", newuser.email);
   users[id] = newuser;
-  console.log(users);
+  res.cookie("userId", newuser.id);
+  res.redirect("/urls");
 });
 // APP.LISTEN //
 
