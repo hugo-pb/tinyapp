@@ -52,6 +52,12 @@ const findUserByEmail = (email) => {
 // urlsForUser //
 const urlsForUser = (id) => {
   const arr = [];
+  for (key in urlDatabase) {
+    if (urlDatabase[key].userID === id) {
+      arr.push(urlDatabase[key]);
+    }
+  }
+  return arr;
 };
 
 // GET REQUESTS //
