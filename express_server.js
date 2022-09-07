@@ -130,13 +130,11 @@ app.post("/urls/show/:id/update", (req, res) => {
   urlDatabase[id] = newUrl;
   res.redirect(`/urls/${id}`);
 });
-
+// destructuring
 app.post("/login", (req, res) => {
-  const id = findUserByEmail(req.body.email);
-  if (
-    !findUserByEmail(req.body.email) ||
-    users[id].password !== req.body.password
-  ) {
+  const { email, password } = req.body;
+  const id = findUserByEmail(email);
+  if (!findUserByEmail(email) || users[id].password !== password) {
     res.status(400);
     return res.send("ERROR 400 ...Oops! Email or pasword are incorrect.");
   }
