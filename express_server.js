@@ -50,6 +50,7 @@ app.get("/urls", (req, res) => {
   const templateData = {
     user: req.cookies.userId,
     urls: urlDatabase,
+    users,
   };
   res.render("urls_index", templateData);
 });
@@ -59,6 +60,7 @@ app.get("/urls/new", (req, res) => {
     user: req.cookies.userId,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
+    users,
   };
   res.render("urls_new", templateVars);
 });
@@ -68,6 +70,7 @@ app.get("/urls/:id", (req, res) => {
     user: req.cookies.userId,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
+    users,
   };
   res.render("urls_show", templateVars);
 });
@@ -83,6 +86,7 @@ app.get("/register", (req, res) => {
     user: req.cookies.userId,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
+    users,
   };
   res.render("register", templateVars);
 });
