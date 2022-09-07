@@ -62,7 +62,6 @@ app.get("/urls", (req, res) => {
     urls: urlDatabase,
     users,
   };
-  console.log(templateData);
   res.render("urls_index", templateData);
 });
 
@@ -88,7 +87,6 @@ app.get("/urls/:id", (req, res) => {
 
 app.get("/u/:id", (req, res) => {
   const longURL = urlDatabase[req.params.id];
-
   res.redirect(longURL);
 });
 
@@ -131,8 +129,6 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  res.clearCookie("username");
-  res.clearCookie("user");
   res.clearCookie("userId");
   res.redirect("/urls");
 });
@@ -146,10 +142,11 @@ app.post("/register", (req, res) => {
   };
   if (findUserByEmail(req.body.email)) {
     res.status(400);
-    return res.send("Oops! it looks like that email is already in use.");
+    return res.send(
+      "ERROR 400 ...Oops! it looks like that email is already in use."
+    );
   }
   users[id] = newuser;
-  console.log("newuser?:", users);
   res.cookie("userId", newuser.id);
   res.redirect("/urls");
 });
