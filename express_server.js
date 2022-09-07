@@ -43,7 +43,7 @@ const generateRandomString = () => {
 
 app.get("/", (req, res) => {
   //redirect to /urls
-  res.send("Hello!");
+  res.redirect("/urls");
 });
 
 app.get("/urls", (req, res) => {
