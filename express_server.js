@@ -10,13 +10,26 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.set("view engine", "ejs");
 
-// data base
+// data base //
 const urlDatabase = {
   b2xVn2: "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "9sm5xK": "http://www.google.com",
 };
 
-// random string generator
+const users = {
+  userRandomID: {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur",
+  },
+  user2RandomID: {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk",
+  },
+};
+
+// random string generator //
 const generateRandomString = () => {
   const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   var result = "";
@@ -26,7 +39,7 @@ const generateRandomString = () => {
   return result;
 };
 
-//GET REQUESTS
+// GET REQUESTS //
 
 app.get("/", (req, res) => {
   //redirect to /urls
@@ -36,7 +49,7 @@ app.get("/", (req, res) => {
 app.get("/urls", (req, res) => {
   const templateData = {
     user: req.cookies.username,
-    urls: urlDatabase
+    urls: urlDatabase,
   };
   res.render("urls_index", templateData);
 });
@@ -45,7 +58,7 @@ app.get("/urls/new", (req, res) => {
   const templateVars = {
     user: req.cookies.username,
     id: req.params.id,
-    longURL: urlDatabase[req.params.id]
+    longURL: urlDatabase[req.params.id],
   };
   res.render("urls_new", templateVars);
 });
@@ -54,7 +67,7 @@ app.get("/urls/:id", (req, res) => {
   const templateVars = {
     user: req.cookies.username,
     id: req.params.id,
-    longURL: urlDatabase[req.params.id]
+    longURL: urlDatabase[req.params.id],
   };
   res.render("urls_show", templateVars);
 });
@@ -69,7 +82,7 @@ app.get("/register", (req, res) => {
   const templateVars = {
     user: req.cookies.username,
     id: req.params.id,
-    longURL: urlDatabase[req.params.id]
+    longURL: urlDatabase[req.params.id],
   };
   res.render("register", templateVars);
 });
@@ -107,6 +120,19 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
+app.post("/register", (req, res) => {
+  id = generateRandomString();
+  const newuser = {
+    id,
+    email: req.body.email,
+    pasword: req.body.password,
+  };
+  res.cookie("user", newuser.email);
+  users[id] = newuser;
+  console.log(users);
+});
+// APP.LISTEN //
+
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`Tynny app listening on port ${PORT}!`);
 });
