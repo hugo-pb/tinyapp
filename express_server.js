@@ -66,6 +66,9 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
+  if (!req.cookies.userId) {
+    res.redirect("/login");
+  }
   let templateVars = {
     user: req.cookies.userId,
     id: req.params.id,
@@ -118,6 +121,9 @@ app.get("/login", (req, res) => {
 // POST REQUEST //
 
 app.post("/urls", (req, res) => {
+  if (!req.cookies.userId) {
+    res.redirect("/login");
+  }
   const id = generateRandomString();
   const longURL = req.body.longURL;
   urlDatabase[id] = longURL;
