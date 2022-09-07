@@ -81,7 +81,7 @@ app.post("/urls/show/:id/update", (req, res) => {
 app.post("/login", (req, res) => {
   const user = req.body.username;
   res.cookie("username", user);
-  res.redirect("/");
+  res.redirect("/urls");
 });
 
 app.listen(PORT, () => {
