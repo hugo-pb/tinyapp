@@ -15,38 +15,41 @@
   <body>
     <%- include('partials/_header') %>
 
-    <main style="margin: 1em;">
-      <div class="card text-center">
-        <h3>Register</h3>
-        <form action="/urls" method="POST">
-            <div class="mb-3">
+    <main style="margin: 1em;display: flex; align-items: center; justify-content: center;">
+      <div class="card text-center" style="width: 18rem;">
+        <h3 class=" bg-primary text-white">Register</h3>
+        <form action="/register" method="POST">
+            <div class="mb-3 ml-3 mr-3">
               <label for="formGroupExampleInput" class="form-label">Name</label>
               <input
                 type="text"
                 class="form-control"
+                name="name"
                 id="formGroupExampleInput"
                 placeholder="Example input placeholder"
               />
             </div>
-            <div class="mb-3">
+            <div class="mb-3 ml-3 mr-3">
               <label for="formGroupExampleInput" class="form-label">Email</label>
               <input
-                type="text"
+                type="email"
                 class="form-control"
+                name="email"
                 id="formGroupExampleInput"
                 placeholder="Example input placeholder"
               />
             </div>
-            <div class="mb-3">
+            <div class="mb-3 ml-3 mr-3">
               <label for="formGroupExampleInput" class="form-label">Pasword</label>
               <input
-                type="text"
+                type="password"
                 class="form-control"
+                name="password"
                 id="formGroupExampleInput"
                 placeholder="Example input placeholder"
               />
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary mb-3">Submit</button>
           </div>
         </form>
       </div>
