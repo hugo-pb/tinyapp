@@ -43,7 +43,7 @@ const generateRandomString = () => {
 const findUserByEmail = (email) => {
   for (id in users) {
     if (users[id].email === email) {
-      return true;
+      return id;
     }
   }
   return false;
@@ -101,7 +101,7 @@ app.get("/register", (req, res) => {
 });
 app.get("/login", (req, res) => {
   const templateVars = {
-    user: req.cookies.userId,
+    user: null,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
     users,
@@ -132,8 +132,16 @@ app.post("/urls/show/:id/update", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const user = req.body.username;
-  res.cookie("username", user);
+  const id = findUserByEmail(req.body.email);
+  if (
+    !findUserByEmail(req.body.email) ||
+    users[id].password !== req.body.password
+  ) {
+    res.status(400);
+    return res.send("ERROR 400 ...Oops! Email or pasword are incorrect.");
+  }
+
+  res.cookie("userId", id);
   res.redirect("/urls");
 });
 
