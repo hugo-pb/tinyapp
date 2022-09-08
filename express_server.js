@@ -86,13 +86,16 @@ const CheckIfIdExistOwner = (arr, id) => {
 // GET REQUESTS //
 
 app.get("/", (req, res) => {
+  if (!req.session.user_id) {
+    return res.redirect("/401");
+  }
   //redirect to /urls
   res.redirect("/urls");
 });
 
 app.get("/urls", (req, res) => {
   if (!req.session.user_id) {
-    return res.redirect("/login");
+    return res.redirect("/401");
   }
   const user = req.session.user_id;
   const urls = urlsForUser(user);
