@@ -66,6 +66,14 @@ const findUserByEmail = (email) => {
   }
   return false;
 };
+const getUserByEmail = (email, database) => {
+  for (id in users) {
+    if (users[id].email === email) {
+      return id;
+    }
+  }
+  return false;
+};
 
 // urlsForUser //
 const urlsForUser = (id) => {
@@ -227,9 +235,9 @@ app.post("/urls/show/:id/update", (req, res) => {
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  const id = findUserByEmail(email);
+  const id = getUserByEmail(email, users);
   if (
-    !findUserByEmail(email) ||
+    !getUserByEmail(email, users) ||
     !bcrypt.compareSync(password, users[id].password)
   ) {
     res.status(400);
@@ -241,7 +249,7 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  res.clearCookie("userId");
+  req.session = null;
   res.redirect("/urls");
 });
 
@@ -254,7 +262,7 @@ app.post("/register", (req, res) => {
     email: req.body.email,
     password: hashedPassword,
   };
-  if (findUserByEmail(req.body.email)) {
+  if (getUserByEmail(req.body.email, users)) {
     res.status(400);
     return res.send(
       "ERROR 400 ...Oops! it looks like that email is already in use."
