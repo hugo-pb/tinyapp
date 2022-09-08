@@ -16,7 +16,9 @@
     <div class="card text-center">
       <div class="card-header"></div>
       <div class="card-body">
-        <h5 class="card-title">TinyURL for: <%= longURL %></h5>
+        <h5 class="card-title">
+          TinyURL for: <%= data.longURL %> <% console.log(locals) %>
+        </h5>
         <p class="card-text">
           Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
         </p>
@@ -29,7 +31,7 @@
           type="text"
           class="border border-primary rounded-pill p-2"
           name="newurl"
-          value="<%= longURL %>"
+          value="<%= data.longURL  %>"
         />
         <button type="submit" class="btn btn-outline-primary rounded-pill">
           EDIT
