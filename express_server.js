@@ -7,6 +7,7 @@ const {
   generateRandomString,
   urlsForUser,
   CheckIfIdExist,
+  CheckIfIdExistOwner,
 } = require("./helpers");
 
 const app = express();
@@ -47,18 +48,6 @@ let users = {
     email: "h@gmail.com",
     password: "123",
   },
-};
-
-// CHECK IF ID EXIST//
-
-// CHECK IF ID EXIST//
-const CheckIfIdExistOwner = (arr, id) => {
-  for (i in arr) {
-    if (id === arr[i].id) {
-      return true;
-    }
-  }
-  return false;
 };
 
 // GET REQUESTS //

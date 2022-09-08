@@ -34,9 +34,19 @@ const CheckIfIdExist = (id, database) => {
   }
   return false;
 };
+const CheckIfIdExistOwner = (arr, id) => {
+  for (i in arr) {
+    if (id === arr[i].id) {
+      return true;
+    }
+  }
+  return false;
+};
+
 module.exports = {
   getUserByEmail,
   generateRandomString,
   urlsForUser,
   CheckIfIdExist,
+  CheckIfIdExistOwner,
 };
