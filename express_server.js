@@ -219,11 +219,13 @@ app.post("/urls/show/:id/update", (req, res) => {
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   const id = findUserByEmail(email);
-  if (!findUserByEmail(email) || users[id].password !== password) {
+  if (
+    !findUserByEmail(email) ||
+    !bcrypt.compareSync(password, users[id].password)
+  ) {
     res.status(400);
     return res.send("ERROR 400 ...Oops! Email or pasword are incorrect.");
   }
-
   res.cookie("userId", id);
   res.redirect("/urls");
 });
@@ -235,10 +237,12 @@ app.post("/logout", (req, res) => {
 
 app.post("/register", (req, res) => {
   const id = generateRandomString();
-  let newuser = {
+  const password = req.body.password;
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  const newuser = {
     id,
     email: req.body.email,
-    password: req.body.password,
+    password: hashedPassword,
   };
   if (findUserByEmail(req.body.email)) {
     res.status(400);
@@ -247,6 +251,7 @@ app.post("/register", (req, res) => {
     );
   }
   users[id] = newuser;
+  console.log(users);
   res.cookie("userId", newuser.id);
   res.redirect("/urls");
 });
