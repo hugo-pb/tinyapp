@@ -1,5 +1,5 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark bg-success">
+  <nav class="navbar navbar-expand-md navbar-dark bg-info">
     <a class="navbar-brand" href="/urls">TinyApp</a>
     <button
       class="navbar-toggler"
@@ -28,7 +28,7 @@
     <% } else { %>
     <h5 class="text-white"><%= users[user].email %></h5>
     <form action="/logout" method="post">
-      <button type="submit" class="btn btn-primary ml-3">Log Out</button>
+      <button type="submit" class="btn btn-danger ml-3">Log Out</button>
     </form>
     <% } %>
   </nav>
