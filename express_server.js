@@ -67,6 +67,15 @@ const urlsForUser = (id) => {
   }
   return arr;
 };
+// CHECK IF ID EXIST//
+const CheckIfIdExist = (id) => {
+  for (i in urlDatabase) {
+    if (id === i) {
+      return true;
+    }
+  }
+  return false;
+};
 
 // GET REQUESTS //
 
@@ -109,6 +118,9 @@ app.get("/urls/:id", (req, res) => {
     data: urlDatabase[req.params.id],
     users,
   };
+  if (!CheckIfIdExist(templateVars.id)) {
+    return res.redirect("/*");
+  }
 
   res.render("urls_show", templateVars);
 });
@@ -164,14 +176,15 @@ app.post("/urls", (req, res) => {
 app.post("/urls/:id/delete", (req, res) => {
   const id = req.params.id;
   delete urlDatabase[id];
-  console.log(req.params.id);
+
   res.redirect("/urls");
 });
 
 app.post("/urls/show/:id/update", (req, res) => {
   const newUrl = req.body.newurl;
   const id = req.params.id;
-  urlDatabase[id] = newUrl;
+  urlDatabase[id].longURL = newUrl;
+  console.log(urlDatabase[id]);
   res.redirect(`/urls/${id}`);
 });
 // destructuring
