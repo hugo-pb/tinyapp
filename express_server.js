@@ -165,8 +165,14 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/401", (req, res) => {
+  let templateVars = {
+    user: req.session.user_id,
+    id: req.params.id,
+    longURL: urlDatabase[req.params.id],
+    users,
+  };
   res.status(401);
-  res.render("401");
+  res.render("401", templateVars);
 });
 
 app.get("/*", (req, res) => {
