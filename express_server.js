@@ -179,8 +179,14 @@ app.get("/401", (req, res) => {
 });
 
 app.get("/*", (req, res) => {
+  let templateVars = {
+    user: req.session.user_id,
+    id: req.params.id,
+    longURL: urlDatabase[req.params.id],
+    users,
+  };
   res.status(404);
-  res.render("404");
+  res.render("404", templateVars);
 });
 
 // POST REQUEST //
