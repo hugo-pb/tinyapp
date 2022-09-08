@@ -128,7 +128,7 @@ app.get("/urls/:id", (req, res) => {
     return res.redirect("/*");
   }
   const arr = urlsForUser(req.session.user_id);
-  if (!CheckIfIdExistOwner(arr, id)) {
+  if (!CheckIfIdExistOwner(arr, templateVars.id)) {
     return res.redirect("/401");
   }
   res.render("urls_show", templateVars);
