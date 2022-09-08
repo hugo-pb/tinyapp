@@ -13,6 +13,7 @@ const {
 const app = express();
 const PORT = 8080; // default port 8080
 
+// Middleware //
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(
@@ -24,7 +25,6 @@ app.use(
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   })
 );
-
 app.set("view engine", "ejs");
 
 // data base //
@@ -41,7 +41,7 @@ const urlDatabase = {
   },
 };
 
-let users = {
+const users = {
   /// these users wont work! please register woth new user
   aJ48lW: {
     id: "aJ48lW",
