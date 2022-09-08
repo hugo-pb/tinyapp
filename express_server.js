@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cookieSession = require("cookie-session");
 const bcrypt = require("bcryptjs");
-const { getUserByEmail } = require("./helpers");
+const { getUserByEmail, generateRandomString } = require("./helpers");
 
 const app = express();
 const PORT = 8080; // default port 8080
@@ -45,14 +45,6 @@ let users = {
 };
 
 // random string generator //
-const generateRandomString = () => {
-  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let result = "";
-  for (let i = 6; i > 0; --i)
-    result += chars[Math.floor(Math.random() * chars.length)];
-
-  return result;
-};
 
 // urlsForUser //
 const urlsForUser = (id) => {

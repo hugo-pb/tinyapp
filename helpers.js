@@ -9,4 +9,12 @@ const getUserByEmail = (email, database) => {
   return undefined;
 };
 
-module.exports = { getUserByEmail };
+const generateRandomString = () => {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let result = "";
+  for (let i = 6; i > 0; --i)
+    result += chars[Math.floor(Math.random() * chars.length)];
+
+  return result;
+};
+module.exports = { getUserByEmail, generateRandomString };
