@@ -198,7 +198,7 @@ app.post("/urls/:id/delete", (req, res) => {
   res.redirect("/urls");
 });
 
-app.post("/urls/show/:id/update", (req, res) => {
+app.post("/urls/show/:id", (req, res) => {
   if (!req.session.user_id) {
     return res.redirect("/401");
   }
