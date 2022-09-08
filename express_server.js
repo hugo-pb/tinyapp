@@ -76,6 +76,15 @@ const CheckIfIdExist = (id) => {
   }
   return false;
 };
+// CHECK IF ID EXIST//
+const CheckIfIdExistOwner = (arr, id) => {
+  for (i in arr) {
+    if (id === arr[i].id) {
+      return true;
+    }
+  }
+  return false;
+};
 
 // GET REQUESTS //
 
@@ -86,7 +95,7 @@ app.get("/", (req, res) => {
 
 app.get("/urls", (req, res) => {
   if (!req.cookies.userId) {
-    res.redirect("/login");
+    return res.redirect("/login");
   }
   const user = req.cookies.userId;
   const urls = urlsForUser(user);
@@ -100,7 +109,7 @@ app.get("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   if (!req.cookies.userId) {
-    res.redirect("/login");
+    return res.redirect("/login");
   }
   let templateVars = {
     user: req.cookies.userId,
@@ -132,7 +141,7 @@ app.get("/u/:id", (req, res) => {
 
 app.get("/register", (req, res) => {
   if (req.cookies.userId) {
-    res.redirect("/urls");
+    return res.redirect("/urls");
   }
   let templateVars = {
     user: req.cookies.userId,
@@ -144,7 +153,7 @@ app.get("/register", (req, res) => {
 });
 app.get("/login", (req, res) => {
   if (req.cookies.userId) {
-    res.redirect("/urls");
+    return res.redirect("/urls");
   }
   let templateVars = {
     user: req.cookies.userId,
@@ -154,6 +163,12 @@ app.get("/login", (req, res) => {
   };
   res.render("login", templateVars);
 });
+
+app.get("/401", (req, res) => {
+  res.status(401);
+  res.render("401");
+});
+
 app.get("/*", (req, res) => {
   res.status(404);
   res.render("404");
@@ -163,7 +178,7 @@ app.get("/*", (req, res) => {
 
 app.post("/urls", (req, res) => {
   if (!req.cookies.userId) {
-    res.redirect("/login");
+    return res.redirect("/login");
   }
   const user = req.cookies.userId;
   const id = generateRandomString();
@@ -174,20 +189,32 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/urls/:id/delete", (req, res) => {
+  if (!req.cookies.userId) {
+    return res.redirect("/401");
+  }
   const id = req.params.id;
+  const arr = urlsForUser(req.cookies.userId);
+  if (!CheckIfIdExistOwner(arr, id)) {
+    return res.redirect("/401");
+  }
   delete urlDatabase[id];
-
   res.redirect("/urls");
 });
 
 app.post("/urls/show/:id/update", (req, res) => {
+  if (!req.cookies.userId) {
+    return res.redirect("/401");
+  }
   const newUrl = req.body.newurl;
   const id = req.params.id;
+  const arr = urlsForUser(req.cookies.userId);
+  if (!CheckIfIdExistOwner(arr, id)) {
+    return res.redirect("/401");
+  }
   urlDatabase[id].longURL = newUrl;
-  console.log(urlDatabase[id]);
   res.redirect(`/urls/${id}`);
 });
-// destructuring
+
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   const id = findUserByEmail(email);
