@@ -22,4 +22,10 @@ describe("getUserByEmail", function () {
     // Write your assert statement here
     assert.equal(user, expectedUserID);
   });
+  it("sould return undefined when sending an empty userparameter.", () => {
+    const user = getUserByEmail("", testUsers);
+    const expectedUserID = undefined;
+    // Write your assert statement here
+    assert.equal(user, expectedUserID);
+  });
 });
