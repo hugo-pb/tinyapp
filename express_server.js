@@ -130,6 +130,9 @@ app.get("/urls/:id", (req, res) => {
   if (!CheckIfIdExist(templateVars.id)) {
     return res.redirect("/*");
   }
+  if (!req.session.user_id) {
+    return res.redirect("/login");
+  }
   const arr = urlsForUser(req.session.user_id);
   if (!CheckIfIdExistOwner(arr, templateVars.id)) {
     return res.redirect("/401");
