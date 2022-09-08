@@ -84,10 +84,22 @@ const CheckIfIdExistOwner = (arr, id) => {
 };
 
 // GET REQUESTS //
+app.get("/pleaseLogin", (req, res) => {
+  if (req.session.user_id) {
+    return res.redirect("/urls");
+  }
+  const templateVars = {
+    user: req.session.user_id,
+    id: req.params.id,
+    longURL: urlDatabase[req.params.id],
+    users,
+  };
+  res.render("pleaseLogin", templateVars);
+});
 
 app.get("/", (req, res) => {
   if (!req.session.user_id) {
-    return res.redirect("/401");
+    return res.redirect("/pleaseLogin");
   }
   //redirect to /urls
   res.redirect("/urls");
@@ -95,7 +107,7 @@ app.get("/", (req, res) => {
 
 app.get("/urls", (req, res) => {
   if (!req.session.user_id) {
-    return res.redirect("/401");
+    return res.redirect("/pleaseLogin");
   }
   const user = req.session.user_id;
   const urls = urlsForUser(user);
@@ -111,7 +123,7 @@ app.get("/urls/new", (req, res) => {
   if (!req.session.user_id) {
     return res.redirect("/login");
   }
-  let templateVars = {
+  const templateVars = {
     user: req.session.user_id,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
