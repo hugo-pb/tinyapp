@@ -35,15 +35,11 @@ const urlDatabase = {
 };
 
 let users = {
+  /// these users wont work! please register woth new user
   aJ48lW: {
     id: "aJ48lW",
     email: "h@gmail.com",
     password: "123",
-  },
-  user2RandomID: {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk",
   },
 };
 
@@ -58,16 +54,9 @@ const generateRandomString = () => {
 };
 
 // find user by email //
-const findUserByEmail = (email) => {
-  for (id in users) {
-    if (users[id].email === email) {
-      return id;
-    }
-  }
-  return false;
-};
+
 const getUserByEmail = (email, database) => {
-  for (id in users) {
+  for (id in database) {
     if (users[id].email === email) {
       return id;
     }
