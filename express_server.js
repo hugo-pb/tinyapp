@@ -2,7 +2,11 @@ const express = require("express");
 const morgan = require("morgan");
 const cookieSession = require("cookie-session");
 const bcrypt = require("bcryptjs");
-const { getUserByEmail, generateRandomString } = require("./helpers");
+const {
+  getUserByEmail,
+  generateRandomString,
+  urlsForUser,
+} = require("./helpers");
 
 const app = express();
 const PORT = 8080; // default port 8080
@@ -44,18 +48,6 @@ let users = {
   },
 };
 
-// random string generator //
-
-// urlsForUser //
-const urlsForUser = (id) => {
-  const arr = [];
-  for (key in urlDatabase) {
-    if (urlDatabase[key].userID == id) {
-      arr.push(urlDatabase[key]);
-    }
-  }
-  return arr;
-};
 // CHECK IF ID EXIST//
 const CheckIfIdExist = (id) => {
   for (i in urlDatabase) {
@@ -102,7 +94,7 @@ app.get("/urls", (req, res) => {
     return res.redirect("/pleaseLogin");
   }
   const user = req.session.user_id;
-  const urls = urlsForUser(user);
+  const urls = urlsForUser(user, urlDatabase);
   let templateData = {
     user,
     urls,
@@ -137,7 +129,7 @@ app.get("/urls/:id", (req, res) => {
   if (!req.session.user_id) {
     return res.redirect("/login");
   }
-  const arr = urlsForUser(req.session.user_id);
+  const arr = urlsForUser(req.session.user_id, urlDatabase);
   if (!CheckIfIdExistOwner(arr, templateVars.id)) {
     return res.redirect("/401");
   }
@@ -215,7 +207,7 @@ app.post("/urls/:id/delete", (req, res) => {
     return res.redirect("/401");
   }
   const id = req.params.id;
-  const arr = urlsForUser(req.session.user_id);
+  const arr = urlsForUser(req.session.user_id, urlDatabase);
   if (!CheckIfIdExistOwner(arr, id)) {
     return res.redirect("/401");
   }
@@ -229,7 +221,7 @@ app.post("/urls/show/:id", (req, res) => {
   }
   const newUrl = req.body.newurl;
   const id = req.params.id;
-  const arr = urlsForUser(req.session.user_id);
+  const arr = urlsForUser(req.session.user_id, urlDatabase);
   if (!CheckIfIdExistOwner(arr, id)) {
     return res.redirect("/401");
   }

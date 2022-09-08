@@ -17,4 +17,13 @@ const generateRandomString = () => {
 
   return result;
 };
-module.exports = { getUserByEmail, generateRandomString };
+const urlsForUser = (id, database) => {
+  const arr = [];
+  for (key in database) {
+    if (database[key].userID == id) {
+      arr.push(database[key]);
+    }
+  }
+  return arr;
+};
+module.exports = { getUserByEmail, generateRandomString, urlsForUser };
