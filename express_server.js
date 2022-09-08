@@ -6,6 +6,7 @@ const {
   getUserByEmail,
   generateRandomString,
   urlsForUser,
+  CheckIfIdExist,
 } = require("./helpers");
 
 const app = express();
@@ -49,14 +50,7 @@ let users = {
 };
 
 // CHECK IF ID EXIST//
-const CheckIfIdExist = (id) => {
-  for (i in urlDatabase) {
-    if (id === i) {
-      return true;
-    }
-  }
-  return false;
-};
+
 // CHECK IF ID EXIST//
 const CheckIfIdExistOwner = (arr, id) => {
   for (i in arr) {
@@ -85,7 +79,6 @@ app.get("/", (req, res) => {
   if (!req.session.user_id) {
     return res.redirect("/pleaseLogin");
   }
-  //redirect to /urls
   res.redirect("/urls");
 });
 
@@ -123,7 +116,7 @@ app.get("/urls/:id", (req, res) => {
     data: urlDatabase[req.params.id],
     users,
   };
-  if (!CheckIfIdExist(templateVars.id)) {
+  if (!CheckIfIdExist(templateVars.id, urlDatabase)) {
     return res.redirect("/*");
   }
   if (!req.session.user_id) {

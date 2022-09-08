@@ -26,4 +26,17 @@ const urlsForUser = (id, database) => {
   }
   return arr;
 };
-module.exports = { getUserByEmail, generateRandomString, urlsForUser };
+const CheckIfIdExist = (id, database) => {
+  for (i in database) {
+    if (id === i) {
+      return true;
+    }
+  }
+  return false;
+};
+module.exports = {
+  getUserByEmail,
+  generateRandomString,
+  urlsForUser,
+  CheckIfIdExist,
+};
