@@ -165,6 +165,7 @@ app.get("/*", (req, res) => {
   const templateVars = {
     user,
     id: req.params.id,
+    email: users[user].email,
   };
   res.status(404);
   res.render("404", templateVars);
