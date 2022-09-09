@@ -26,7 +26,7 @@ const urlsForUser = (id, database) => {
   }
   return arr;
 };
-const CheckIfIdExist = (id, database) => {
+const idExist = (id, database) => {
   for (i in database) {
     if (id === i) {
       return true;
@@ -34,7 +34,7 @@ const CheckIfIdExist = (id, database) => {
   }
   return false;
 };
-const CheckIfIdExistOwner = (arr, id) => {
+const isUrlOwner = (arr, id) => {
   for (i in arr) {
     if (id === arr[i].id) {
       return true;
@@ -47,6 +47,6 @@ module.exports = {
   getUserByEmail,
   generateRandomString,
   urlsForUser,
-  CheckIfIdExist,
-  CheckIfIdExistOwner,
+  idExist,
+  isUrlOwner,
 };

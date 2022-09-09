@@ -6,8 +6,8 @@ const {
   getUserByEmail,
   generateRandomString,
   urlsForUser,
-  CheckIfIdExist,
-  CheckIfIdExistOwner,
+  idExist,
+  isUrlOwner,
 } = require("./helpers");
 
 const app = express();
@@ -51,18 +51,6 @@ const users = {
 };
 
 // GET REQUESTS //
-app.get("/pleaseLogin", (req, res) => {
-  if (req.session.user_id) {
-    return res.redirect("/urls");
-  }
-  const templateVars = {
-    user: req.session.user_id,
-    id: req.params.id,
-    longURL: urlDatabase[req.params.id],
-    users,
-  };
-  res.render("pleaseLogin", templateVars);
-});
 
 app.get("/", (req, res) => {
   if (!req.session.user_id) {
@@ -77,10 +65,10 @@ app.get("/urls", (req, res) => {
   }
   const user = req.session.user_id;
   const urls = urlsForUser(user, urlDatabase);
-  let templateData = {
+  const templateData = {
     user,
     urls,
-    users,
+    email: users[user].email, /// change all to sen more specific data///
   };
   res.render("urls_index", templateData);
 });
@@ -89,37 +77,42 @@ app.get("/urls/new", (req, res) => {
   if (!req.session.user_id) {
     return res.redirect("/login");
   }
+  const user = req.session.user_id;
   const templateVars = {
-    user: req.session.user_id,
+    user,
     id: req.params.id,
-    longURL: urlDatabase[req.params.id],
-    users,
+    email: users[user].email,
   };
   res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:id", (req, res) => {
+  const user = req.session.user_id;
   let templateVars = {
-    user: req.session.user_id,
+    user,
     id: req.params.id,
     data: urlDatabase[req.params.id],
-    users,
+    email: users[user].email,
   };
-  if (!CheckIfIdExist(templateVars.id, urlDatabase)) {
+  if (!idExist(templateVars.id, urlDatabase)) {
     return res.redirect("/*");
   }
   if (!req.session.user_id) {
     return res.redirect("/login");
   }
   const arr = urlsForUser(req.session.user_id, urlDatabase);
-  if (!CheckIfIdExistOwner(arr, templateVars.id)) {
+  if (!isUrlOwner(arr, templateVars.id)) {
     return res.redirect("/401");
   }
   res.render("urls_show", templateVars);
 });
 
 app.get("/u/:id", (req, res) => {
+  /// add edge case it long url doesnt exist
   const longURL = urlDatabase[req.params.id].longURL;
+  if (!longURL) {
+    return res.redirect("/404");
+  }
   res.redirect(longURL);
 });
 
@@ -127,44 +120,52 @@ app.get("/register", (req, res) => {
   if (req.session.user_id) {
     return res.redirect("/urls");
   }
-  let templateVars = {
-    user: req.session.user_id,
-    id: req.params.id,
-    longURL: urlDatabase[req.params.id],
-    users,
+  const templateVars = {
+    user: req.session.user_id, // falsy value / this is just for the header.
   };
   res.render("register", templateVars);
 });
+
 app.get("/login", (req, res) => {
   if (req.session.user_id) {
     return res.redirect("/urls");
   }
-  let templateVars = {
-    user: req.session.user_id,
-    id: req.params.id,
-    longURL: urlDatabase[req.params.id],
-    users,
+  const templateVars = {
+    user: req.session.user_id, // falsy value / this is just for the header.
   };
+
   res.render("login", templateVars);
 });
 
 app.get("/401", (req, res) => {
-  let templateVars = {
-    user: req.session.user_id,
+  const user = req.session.user_id;
+  const templateVars = {
+    user,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
-    users,
+    email: users[user].email,
   };
   res.status(401);
   res.render("401", templateVars);
 });
 
+app.get("/pleaseLogin", (req, res) => {
+  if (req.session.user_id) {
+    return res.redirect("/urls");
+  }
+  const templateVars = {
+    user: req.session.user_id, // falsy value / this is just for the header.
+  };
+  res.render("pleaseLogin", templateVars);
+});
+
 app.get("/*", (req, res) => {
-  let templateVars = {
-    user: req.session.user_id,
+  const user = req.session.user_id;
+  const templateVars = {
+    user,
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
-    users,
+    email: users[user].email,
   };
   res.status(404);
   res.render("404", templateVars);
@@ -190,7 +191,7 @@ app.post("/urls/:id/delete", (req, res) => {
   }
   const id = req.params.id;
   const arr = urlsForUser(req.session.user_id, urlDatabase);
-  if (!CheckIfIdExistOwner(arr, id)) {
+  if (!isUrlOwner(arr, id)) {
     return res.redirect("/401");
   }
   delete urlDatabase[id];
@@ -204,7 +205,7 @@ app.post("/urls/show/:id", (req, res) => {
   const newUrl = req.body.newurl;
   const id = req.params.id;
   const arr = urlsForUser(req.session.user_id, urlDatabase);
-  if (!CheckIfIdExistOwner(arr, id)) {
+  if (!isUrlOwner(arr, id)) {
     return res.redirect("/401");
   }
   urlDatabase[id].longURL = newUrl;
