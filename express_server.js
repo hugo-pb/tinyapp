@@ -219,7 +219,10 @@ app.post("/login", (req, res) => {
     !bcrypt.compareSync(password, users[id].password)
   ) {
     res.status(400);
-    return res.send("ERROR 400 ...Oops! Email or pasword are incorrect.");
+    return res.render("400", {
+      user: null,
+      message: "ERROR 400 ...Oops! Email or pasword are incorrect.",
+    });
   }
   req.session.user_id = id;
 
@@ -242,9 +245,10 @@ app.post("/register", (req, res) => {
   };
   if (getUserByEmail(req.body.email, users)) {
     res.status(400);
-    return res.send(
-      "ERROR 400 ...Oops! it looks like that email is already in use."
-    );
+    return res.render("400", {
+      user: null,
+      message: "ERROR 400 ...Oops! it looks like that email is already in use.",
+    });
   }
   users[id] = newuser;
   req.session.user_id = newuser.id;
