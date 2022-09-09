@@ -87,8 +87,11 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
+  if (!req.session.user_id) {
+    return res.redirect("/login");
+  }
   const user = req.session.user_id;
-  let templateVars = {
+  const templateVars = {
     user,
     id: req.params.id,
     data: urlDatabase[req.params.id],
@@ -109,11 +112,12 @@ app.get("/urls/:id", (req, res) => {
 
 app.get("/u/:id", (req, res) => {
   /// add edge case it long url doesnt exist
-  const longURL = urlDatabase[req.params.id].longURL;
-  if (!longURL) {
+  try {
+    const longURL = urlDatabase[req.params.id].longURL;
+    res.redirect(longURL);
+  } catch {
     return res.redirect("/404");
   }
-  res.redirect(longURL);
 });
 
 app.get("/register", (req, res) => {
@@ -138,6 +142,9 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/401", (req, res) => {
+  if (!req.session.user_id) {
+    return res.render("401", { user: null });
+  }
   const user = req.session.user_id;
   const templateVars = {
     user,
@@ -160,12 +167,13 @@ app.get("/pleaseLogin", (req, res) => {
 });
 
 app.get("/*", (req, res) => {
+  if (!req.session.user_id) {
+    return res.render("404", { user: null });
+  }
   const user = req.session.user_id;
   const templateVars = {
     user,
     id: req.params.id,
-    longURL: urlDatabase[req.params.id],
-    email: users[user].email,
   };
   res.status(404);
   res.render("404", templateVars);
@@ -248,7 +256,6 @@ app.post("/register", (req, res) => {
     );
   }
   users[id] = newuser;
-  console.log(users);
   req.session.user_id = newuser.id;
   res.redirect("/urls");
 });
